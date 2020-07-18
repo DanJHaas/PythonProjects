@@ -2,7 +2,9 @@ from pynput import keyboard
 from pynput.keyboard import Key, Controller
 message = []
 yes = Controller()
-    
+def here():
+    return True
+
 def on_press(key):
     letter = str(key).replace("'","")
     if key == keyboard.Key.esc:
