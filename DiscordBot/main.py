@@ -66,6 +66,7 @@ async def weather(ctx, *args):
 async def spacefacts(ctx):
     await ctx.send(datetime.utcfromtimestamp(int("1595130776")).strftime('%Y-%m-%d %H:%M:%S'))
 
+#give advice
 @bot.command()
 async def advice(ctx):
     URL = "https://api.adviceslip.com/advice"
