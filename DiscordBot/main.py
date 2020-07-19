@@ -41,8 +41,6 @@ def GetWeather(city):
     return obj
 
 
-
-
 @bot.command()
 async def weather(ctx, *args):
     location = str(args).replace("(", "").replace(")","").replace("'","")
