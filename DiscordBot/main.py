@@ -48,26 +48,34 @@ async def weather(ctx, *args):
     location = str(args).replace("(", "").replace(")","").replace("'","")
     location = str(location[:-1])
     obj = json.loads(str(GetWeather(location)).replace("'","\""))
-    #await ctx.send(obj)
-    Weather_data = [
-    ['Location', 'Wind info', "Sky Conditions", "Temperature (Celcius)","Barometer"],
-    ["Latitude: "+str(obj["coord"]["lat"])+"°", 'Wind Speed: '+str(obj["wind"]["speed"])+" km/h", "Sky condition: "+str(obj["weather"][0]["main"]),"Current Temp: "+str(obj["main"]["temp"])+"°","Pressure: "+str(obj["main"]["pressure"])+" mbar"],
-    ["Longitude: "+str(obj["coord"]["lon"])+"°", 'Wind angle: '+str(obj["wind"]["deg"])+"°", "Cloud type: "+str(obj["weather"][0]["description"]), "Feels like: "+str(obj["main"]["feels_like"])+"°","Humidity: "+str(obj["main"]["humidity"])+"%"],
-    ["City: "+obj["name"], "","","Min Temp: "+str(obj["main"]["temp_min"])+"°","Visibility: "+str(obj["visibility"]/100)+"%"],
-    ["Country: "+obj["sys"]["country"],"","","","Max Temp: "+str(obj["main"]["temp_max"])+"°"]
-]
-    tableWeather = SingleTable(Weather_data)
-    await ctx.send("```"+tableWeather.table+"```")
+    if str(obj["cod"]) == "200":
+        #await ctx.send(obj)
+        Weather_data = [
+        ['Location', 'Wind info', "Sky Conditions", "Temperature (Celcius)","Barometer"],
+        ["Latitude: "+str(obj["coord"]["lat"])+"°", 'Wind Speed: '+str(obj["wind"]["speed"])+" km/h", "Sky condition: "+str(obj["weather"][0]["main"]),"Current Temp: "+str(obj["main"]["temp"])+"°","Pressure: "+str(obj["main"]["pressure"])+" mbar"],
+        ["Longitude: "+str(obj["coord"]["lon"])+"°", 'Wind angle: '+str(obj["wind"]["deg"])+"°", "Cloud type: "+str(obj["weather"][0]["description"]), "Feels like: "+str(obj["main"]["feels_like"])+"°","Humidity: "+str(obj["main"]["humidity"])+"%"],
+        ["City: "+obj["name"], "","","Min Temp: "+str(obj["main"]["temp_min"])+"°","Visibility: "+str(obj["visibility"]/100)+"%"],
+        ["Country: "+obj["sys"]["country"],"","","","Max Temp: "+str(obj["main"]["temp_max"])+"°"]]
+        tableWeather = SingleTable(Weather_data)
+        await ctx.send("```"+tableWeather.table+"```")
+    else:
+        await ctx.send("could not process location please try again")
 
 #rand facts about space
 @bot.command()
 async def spacefacts(ctx):
     await ctx.send(datetime.utcfromtimestamp(int("1595130776")).strftime('%Y-%m-%d %H:%M:%S'))
 
+@bot.command()
+async def advice(ctx):
+    URL = "https://api.adviceslip.com/advice"
+    r = requests.get(url = URL)
+    data = r.json()
+    obj = json.loads(str(data).replace("'","\""))
+    await ctx.send(str(obj["slip"]["advice"]))
 
-#weather Api : 5302a0e28047fdba190337922230a083
 
-#http://api.openweathermap.org/data/2.5/weather?q=New%20York&appid=5302a0e28047fdba190337922230a083
+
 myfile = open(r"C:\Users\bluee\Desktop\DeepFake\key.txt")
 txt = myfile.read()
 bot.run(txt)
