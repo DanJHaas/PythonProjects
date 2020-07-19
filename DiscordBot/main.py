@@ -37,7 +37,7 @@ def GetWeather(city):
     PARAMS = {'q':location,'appid':apikey,'units':untits}
     r = requests.get(url = URL, params = PARAMS)
     data = r.json()
-    obj = json.loads(str(data).replace("'","\""))
+    obj = json.loads(str(data).replace("\'","\""))
     return obj
 
 
@@ -45,7 +45,7 @@ def GetWeather(city):
 async def weather(ctx, *args):
     location = str(args).replace("(", "").replace(")","").replace("'","")
     location = str(location[:-1])
-    obj = json.loads(str(GetWeather(location)).replace("'","\""))
+    obj = json.loads(str(GetWeather(location)).replace("\'","\""))
     if str(obj["cod"]) == "200":
         #await ctx.send(obj)
         Weather_data = [
@@ -64,14 +64,18 @@ async def weather(ctx, *args):
 async def spacefacts(ctx):
     await ctx.send(datetime.utcfromtimestamp(int("1595130776")).strftime('%Y-%m-%d %H:%M:%S'))
 
+
+#stupid fucking apostrophies holy fuck
+def adviceLink():
+    URL = "https://api.adviceslip.com/advice"
+    r = requests.get(url= URL)
+    return r.text
+
 #give advice
 @bot.command()
 async def advice(ctx):
-    URL = "https://api.adviceslip.com/advice"
-    r = requests.get(url = URL)
-    data = r.json()
-    obj = json.loads(str(data).replace("'","\""))
-    await ctx.send(str(obj["slip"]["advice"]))
+    obj = json.loads(str(adviceLink()))
+    await ctx.send(str(obj["slip"]["advice"]).upper())
 
 
 
