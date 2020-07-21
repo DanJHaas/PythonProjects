@@ -3,6 +3,7 @@ from discord.ext import commands
 from terminaltables import AsciiTable, DoubleTable, SingleTable
 from datetime import datetime
 import requests
+import urllib
 import json
 import PIL
 
@@ -66,19 +67,43 @@ async def spacefacts(ctx):
 
 
 #stupid fucking apostrophies holy fuck
-def adviceLink():
-    URL = "https://api.adviceslip.com/advice"
-    r = requests.get(url= URL)
-    return r.text
-
 #give advice
 @bot.command()
 async def advice(ctx):
-    obj = json.loads(str(adviceLink()))
+    URL = "https://api.adviceslip.com/advice"
+    r = requests.get(url= URL)
+    unga = r.text
+    obj = json.loads(str(unga))
     await ctx.send(str(obj["slip"]["advice"]).upper())
 
+#e621, lots of string and url formatting, Uri is annoying and should be tossed into hell
+@bot.command()
+async def e621(ctx, *args):
+    URL = "https://e621.net/posts.json?"
+    limit = "1"
+    if args != ():
+        await ctx.send("```"+"Tags: "+str(args).replace("(","").replace(")","").replace("'","")+"```")
+        tags = str(args).replace(",","+").replace("(","").replace(")","").replace("'","")[:-1]+"+order:random"
+    else:
+        tags = "order:random"
 
+    PARAMS = {'limit':limit,'tags':tags}
+    qry = urllib.parse.urlencode(PARAMS).replace("%3A",":").replace("%2B","+")
+    HEADERS = {'User-Agent':'HH124','From':'hasshaas1@gmail.com'}
+    s = requests.Session()
+    req = requests.Request(method='GET', url=URL,params = PARAMS,headers=HEADERS)
+    prep = req.prepare()
+    prep.url = URL + qry
+    link = s.send(prep)
+    r = link.json()
+    if r["posts"] != []:
+        for i in range(int(limit)):
+            await ctx.send("Artist: "+r["posts"][i]["tags"]["artist"][0])
+            await ctx.send(r["posts"][i]["file"]["url"])
+    else:
+        await ctx.send("invalid tags please try again")
 
+#https://e621.net/posts.json?limit=1&tags=transformation+order:random
 myfile = open(r"C:\Users\bluee\Desktop\DeepFake\key.txt")
 txt = myfile.read()
 bot.run(txt)
