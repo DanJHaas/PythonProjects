@@ -60,7 +60,7 @@ async def weather(ctx, *args):
     else:
         await ctx.send("could not process location please try again")
 
-#rand facts about space
+#rand facts about space TODO #1
 @bot.command()
 async def spacefacts(ctx):
     await ctx.send(datetime.utcfromtimestamp(int("1595130776")).strftime('%Y-%m-%d %H:%M:%S'))
@@ -77,6 +77,7 @@ async def advice(ctx):
     await ctx.send(str(obj["slip"]["advice"]).upper())
 
 #e621, lots of string and url formatting, Uri is annoying and should be tossed into hell
+#https://e621.net/posts.json?limit=1&tags=transformation+order:random
 @bot.command()
 async def e621(ctx, *args):
     URL = "https://e621.net/posts.json?"
@@ -103,7 +104,7 @@ async def e621(ctx, *args):
     else:
         await ctx.send("invalid tags please try again")
 
-#https://e621.net/posts.json?limit=1&tags=transformation+order:random
+
 myfile = open(r"C:\Users\bluee\Desktop\DeepFake\key.txt")
 txt = myfile.read()
 bot.run(txt)
