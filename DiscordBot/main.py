@@ -13,23 +13,6 @@ bot = commands.Bot(command_prefix="~")
 async def on_ready():
     print("Were good to go")
 
-@bot.command()
-async def unga(ctx):
-    await ctx.send(file=discord.File(r"C:\Users\bluee\Desktop\DeepFake\DeepFaceLab_CUDA\workspace\result.mp4"))
-
-table_data = [
-    ['Heading1', 'Heading2'],
-    ['row1', 'row1'],
-    ['row2', 'row2'],
-    ['row3', 'row3']
-]
-table = DoubleTable(table_data)
-@bot.command()
-async def test(ctx, *args):
-    await ctx.send("```"+table.table+"```")
-
-
-
 def GetWeather(city):
     URL = "http://api.openweathermap.org/data/2.5/weather"
     location = city
@@ -80,31 +63,32 @@ async def advice(ctx):
 #https://e621.net/posts.json?limit=1&tags=transformation+order:random
 @bot.command()
 async def e621(ctx, *args):
-    URL = "https://e621.net/posts.json?"
-    limit = "1"
-    if args != ():
-        await ctx.send("```"+"Tags: "+str(args).replace("(","").replace(")","").replace("'","")+"```")
-        tags = str(args).replace(",","+").replace("(","").replace(")","").replace("'","")[:-1]+"+order:random"
+    if ctx.channel.is_nsfw():
+        URL = "https://e621.net/posts.json?"
+        limit = "1"
+        if args != ():
+            await ctx.send("```"+"Tags: "+str(args).replace("(","").replace(")","").replace("'","")+"```")
+            tags = str(args).replace(",","+").replace("(","").replace(")","").replace("'","")[:-1]+"+order:random"
+        else:
+            tags = "order:random"
+
+        PARAMS = {'limit':limit,'tags':tags}
+        qry = urllib.parse.urlencode(PARAMS).replace("%3A",":").replace("%2B","+")
+        HEADERS = {'User-Agent':'HH124','From':'hasshaas1@gmail.com'}
+        s = requests.Session()
+        req = requests.Request(method='GET', url=URL,params = PARAMS,headers=HEADERS)
+        prep = req.prepare()
+        prep.url = URL + qry
+        link = s.send(prep)
+        r = link.json()
+        if r["posts"] != []:
+            for i in range(int(limit)):
+                await ctx.send("```"+"Artist: "+r["posts"][i]["tags"]["artist"][0]+"```")
+                await ctx.send(r["posts"][i]["file"]["url"])
+        else:
+            await ctx.send("invalid tags please try again")
     else:
-        tags = "order:random"
-
-    PARAMS = {'limit':limit,'tags':tags}
-    qry = urllib.parse.urlencode(PARAMS).replace("%3A",":").replace("%2B","+")
-    HEADERS = {'User-Agent':'HH124','From':'hasshaas1@gmail.com'}
-    s = requests.Session()
-    req = requests.Request(method='GET', url=URL,params = PARAMS,headers=HEADERS)
-    prep = req.prepare()
-    prep.url = URL + qry
-    link = s.send(prep)
-    r = link.json()
-    if r["posts"] != []:
-        for i in range(int(limit)):
-            await ctx.send("Artist: "+r["posts"][i]["tags"]["artist"][0])
-            await ctx.send(r["posts"][i]["file"]["url"])
-    else:
-        await ctx.send("invalid tags please try again")
-
-
+        await ctx.send("This is a Non-Nsfw chat")
 myfile = open(r"C:\Users\bluee\Desktop\DeepFake\key.txt")
 txt = myfile.read()
 bot.run(txt)
