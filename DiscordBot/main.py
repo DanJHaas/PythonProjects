@@ -32,11 +32,11 @@ def ElectricBoogaloo(lat, lon):
     txt1 = myfile1.read()
     URL = "https://api.weatherbit.io/v2.0/current"
     apikey = txt1
-    myfile1.close()
     PARAMS = {'lat':lat,'lon':lon,'key':apikey}
     r = requests.get(url = URL, params = PARAMS)
     data = r.text
     obj = json.loads(str(data))
+    myfile1.close()
     return obj
 
 
