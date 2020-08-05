@@ -1,3 +1,4 @@
+from math import nan
 import discord
 from discord.ext import commands
 from terminaltables import AsciiTable, DoubleTable, SingleTable
@@ -6,9 +7,10 @@ import requests
 import urllib
 import json
 import PIL
+from geopy.geocoders import Nominatim
 
 bot = commands.Bot(command_prefix="~")
-
+geolocator = Nominatim(user_agent="ungaDiscordBot")
 @bot.event
 async def on_ready():
     print("Were good to go")
@@ -22,6 +24,15 @@ def GetWeather(city):
     r = requests.get(url = URL, params = PARAMS)
     data = r.json()
     obj = json.loads(str(data).replace("\'","\""))
+    return obj
+
+def ElectricBoogaloo(lat, lon):
+    URL = "https://api.weatherbit.io/v2.0/current"
+    apikey = "5da0faaee117402bb3fbcfeab8115847"
+    PARAMS = {'lat':lat,'lon':lon,'key':apikey}
+    r = requests.get(url = URL, params = PARAMS)
+    data = r.text
+    obj = json.loads(str(data))
     return obj
 
 
@@ -59,6 +70,21 @@ async def advice(ctx):
     obj = json.loads(str(unga))
     await ctx.send(str(obj["slip"]["advice"]).upper())
 
+@bot.command()
+async def geocode(ctx, *args):
+    if args != "":
+        if geolocator.geocode(args) != None:
+            location = geolocator.geocode(args)
+            await ctx.send((location.latitude, location.longitude))
+            await ctx.send(ElectricBoogaloo(location.latitude, location.longitude))
+            await ctx.send(location.address)
+        else:
+            await ctx.send("City does not exsist")
+    else:
+        await ctx.send("No Arguments found")
+    #API: 5da0faaee117402bb3fbcfeab8115847
+
+
 #e621, lots of string and url formatting, Uri is annoying and should be tossed into hell
 #https://e621.net/posts.json?limit=1&tags=transformation+order:random
 @bot.command()
@@ -89,6 +115,8 @@ async def e621(ctx, *args):
             await ctx.send("invalid tags please try again")
     else:
         await ctx.send("This is a Non-Nsfw chat")
+
+        
 myfile = open(r"C:\Users\bluee\Desktop\DeepFake\key.txt")
 txt = myfile.read()
 bot.run(txt)
