@@ -26,9 +26,13 @@ def GetWeather(city):
     obj = json.loads(str(data).replace("\'","\""))
     return obj
 
+
 def ElectricBoogaloo(lat, lon):
+    myfile1 = open("DiscordBot\key2.txt")
+    txt1 = myfile1.read()
     URL = "https://api.weatherbit.io/v2.0/current"
-    apikey = "5da0faaee117402bb3fbcfeab8115847"
+    apikey = txt1
+    myfile1.close()
     PARAMS = {'lat':lat,'lon':lon,'key':apikey}
     r = requests.get(url = URL, params = PARAMS)
     data = r.text
@@ -69,6 +73,7 @@ async def advice(ctx):
     unga = r.text
     obj = json.loads(str(unga))
     await ctx.send(str(obj["slip"]["advice"]).upper())
+
 
 @bot.command()
 async def geocode(ctx, *args):
