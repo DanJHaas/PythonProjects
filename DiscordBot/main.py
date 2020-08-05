@@ -117,7 +117,7 @@ async def e621(ctx, *args):
         await ctx.send("This is a Non-Nsfw chat")
 
         
-myfile = open("key1.txt")
+myfile = open("DiscordBot\key1.txt")
 txt = myfile.read()
 bot.run(txt)
 myfile.close()
