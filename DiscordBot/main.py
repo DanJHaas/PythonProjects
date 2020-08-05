@@ -117,7 +117,7 @@ async def e621(ctx, *args):
         await ctx.send("This is a Non-Nsfw chat")
 
         
-myfile = open(r"C:\Users\bluee\Desktop\DeepFake\key.txt")
+myfile = open("key1.txt")
 txt = myfile.read()
 bot.run(txt)
 myfile.close()
