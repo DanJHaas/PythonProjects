@@ -93,7 +93,6 @@ async def geocode(ctx, *args):
             await ctx.send("City does not exsist")
     else:
         await ctx.send("No Arguments found")
-    #API: 5da0faaee117402bb3fbcfeab8115847
 
 
 #e621, lots of string and url formatting, Uri is annoying and should be tossed into hell
