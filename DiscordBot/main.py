@@ -52,7 +52,7 @@ async def weather(ctx, *args):
         ["Latitude: "+str(obj["coord"]["lat"])+"°", 'Wind Speed: '+str(obj["wind"]["speed"])+" km/h", "Sky condition: "+str(obj["weather"][0]["main"]),"Current Temp: "+str(obj["main"]["temp"])+"°","Pressure: "+str(obj["main"]["pressure"])+" mbar"],
         ["Longitude: "+str(obj["coord"]["lon"])+"°", 'Wind angle: '+str(obj["wind"]["deg"])+"°", "Cloud type: "+str(obj["weather"][0]["description"]), "Feels like: "+str(obj["main"]["feels_like"])+"°","Humidity: "+str(obj["main"]["humidity"])+"%"],
         ["City: "+obj["name"], "","","Min Temp: "+str(obj["main"]["temp_min"])+"°","Visibility: "+str(obj["visibility"]/100)+"%"],
-        ["Country: "+obj["sys"]["country"],"","","","Max Temp: "+str(obj["main"]["temp_max"])+"°"]]
+        ["Country: "+obj["sys"]["country"],"","","Max Temp: "+str(obj["main"]["temp_max"])+"°",""]]
         tableWeather = SingleTable(Weather_data)
         await ctx.send("```"+tableWeather.table+"```")
     else:
