@@ -27,7 +27,7 @@ def GetWeather(city):
     return obj
 
 
-def ElectricBoogaloo(lat, lon):
+def grepWeather(lat, lon):
     myfile1 = open("DiscordBot\key2.txt")
     txt1 = myfile1.read()
     URL = "https://api.weatherbit.io/v2.0/current"
@@ -80,9 +80,15 @@ async def geocode(ctx, *args):
     if args != "":
         if geolocator.geocode(args) != None:
             location = geolocator.geocode(args)
-            await ctx.send((location.latitude, location.longitude))
-            await ctx.send(ElectricBoogaloo(location.latitude, location.longitude))
-            await ctx.send(location.address)
+            w = grepWeather(location.latitude, location.longitude)
+            Weather_data = [
+            ['Location', 'Wind info', "Sky Conditions", "Temperature (Celcius)","Barometer"],
+            ["Latitude: "+str(w["data"][0]["lat"])+"°", 'Wind Speed: '+str(w["data"][0]["wind_spd"])+" km/h", "Cloud Cover: "+str(w["data"][0]["clouds"])+"%","Temp: "+str(w["data"][0]["temp"])+"°","Pressure: "+str(w["data"][0]["pres"])+" mbar"],
+            ["Longitude: "+str(w["data"][0]["lon"])+"°", 'Wind angle: '+str(w["data"][0]["wind_dir"])+"°", "UV index: "+str(w["data"][0]["uv"]), "Apparent Temp: "+str(w["data"][0]["app_temp"])+"°","Humidity: "+str(w["data"][0]["rh"])+"%"],
+            ["City: "+str(w["data"][0]["city_name"]), "","Solar Radiation: "+str(w["data"][0]["solar_rad"])+" W/m^2","","Visibility: "+str(w["data"][0]["vis"])+" Meters"],
+            ["Country: "+str(w["data"][0]["country_code"]),"","Time: "+str(w["data"][0]["pod"]),"","Dew Point: "+str(w["data"][0]["dewpt"])+"°"]]
+            tableWeather = SingleTable(Weather_data)
+            await ctx.send("```"+tableWeather.table+"```")
         else:
             await ctx.send("City does not exsist")
     else:
