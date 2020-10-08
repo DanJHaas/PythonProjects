@@ -1,6 +1,4 @@
-test = ["hello","goodbye"]
-
-for i in range(len(test)):
-    print(test[i])
-
-
+x = 10
+if x != 0:
+    x = x-1
+    print(x)
