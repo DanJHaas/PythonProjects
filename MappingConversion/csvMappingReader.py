@@ -1,6 +1,8 @@
 import csv
 import fileinput
 from pathlib import Path
+import time
+t0 = time.time()
 fields = {}
 methods = {}
 params = {}
@@ -15,12 +17,11 @@ for path in Path('MappingConversion//Mappings').rglob('*.csv'):
                 methods[str(csvinput[0])] = str(csvinput[1])
             if "params" in path.name:
                 params[str(csvinput[0])] = str(csvinput[1])
-            # f.write("{0},{1}\n".format(columns[0],columns[1]))
 
 
 
 
-for path in Path('rscircuits').rglob('*.java'):
+for path in Path('witchery').rglob('*.java'):
     for line in fileinput.input(path, inplace=True):
         line = line.rstrip()
         if not line:
@@ -36,3 +37,6 @@ for path in Path('rscircuits').rglob('*.java'):
                 line = line.replace(key, val)
         print(line)
 
+
+t1 = time.time() - t0
+print(t1)
