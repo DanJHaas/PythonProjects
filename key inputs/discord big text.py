@@ -24,4 +24,3 @@ def on_press(key):
 lis = keyboard.Listener(on_press=on_press)
 lis.start()
 lis.join()
-
