@@ -12,7 +12,7 @@ for path in Path('MappingConversion//Mappings').rglob('*.csv'):
         for csvinput in inputfile:
             mappings[str(csvinput[0])] = str(csvinput[1])
 
-for path in Path('witchery').rglob('*.java'):
+for path in Path('MappingConversion//ModFile').rglob('*.java'):
     for line in fileinput.input(path, inplace=True):
         line = line.rstrip()
         if not line:
