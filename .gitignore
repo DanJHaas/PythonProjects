@@ -1,3 +1,4 @@
 *.txt
 /.vscode
 /DiscordBot/Certs.py
+*.csv
