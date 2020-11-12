@@ -19,10 +19,10 @@ except Exception:
     print("No Letters Allowed")
 
 if isinstance(scale, int):
-    if scale > 2:
+    if scale < 2:
         scale = 1
         print("Default Scale has been selected")
-    else:
+    elif scale >= 2:
         print("Scale 2 was selected")
 else:
     scale = 1
