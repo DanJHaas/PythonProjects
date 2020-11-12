@@ -28,9 +28,6 @@ else:
     scale = 1
     print("Default Scale has been selected")
 
-
-playerurl = "https://api.mojang.com/users/profiles/minecraft/{0}".format(username)
-
 if os.path.exists(resource_path(os.path.dirname(os.path.abspath(__file__)))+"\\command.txt"):
         os.remove(resource_path(os.path.dirname(os.path.abspath(__file__)))+"\\command.txt")
 
@@ -60,19 +57,21 @@ def convImg():
             file1.write('{id:"'+winner+'",Count:1b},')
         file1.write("]}")  
     os.remove(resource_path(os.path.dirname(os.path.abspath(__file__)))+'\\{0}.png'.format(username))   
-                
-                
-r = requests.get(url= playerurl)
-r2 = r.text
-if r2 != "":
-    print("Found User {0}".format(username))
-    jsondata = json.loads(str(r2))
-    uuid = str(jsondata["id"])
-    imageurl = "https://crafatar.com/avatars/{0}?size={1}".format(uuid,scale*8)
-    img_data = requests.get(imageurl).content
-    with open(resource_path(os.path.dirname(os.path.abspath(__file__)))+'\\{0}.png'.format(username), 'wb') as handler:
-        handler.write(img_data)
 
-    convImg()
+if username != "":
+    playerurl = "https://api.mojang.com/users/profiles/minecraft/{0}".format(username)  
+    r = requests.get(url= playerurl)
+    r2 = r.text
+    if r2 != "":
+        print("Found User {0}".format(username))
+        jsondata = json.loads(str(r2))
+        uuid = str(jsondata["id"])
+        imageurl = "https://crafatar.com/avatars/{0}?size={1}".format(uuid,scale*8)
+        img_data = requests.get(imageurl).content
+        with open(resource_path(os.path.dirname(os.path.abspath(__file__)))+'\\{0}.png'.format(username), 'wb') as handler:
+            handler.write(img_data)
 
+        convImg()
+else:
+    print("No Username Was Entered")
 
