@@ -20,8 +20,9 @@ except Exception:
     scale = 1
     print("Default Scale has been selected")
 
-if scale > 1 or scale < 2:
+if (scale == 1) or (scale == 2):
     scale = scale
+    print("scale: {0}".format(scale))
 else:
     print("cannot have scale below 1 or above 2")
     print("Default Scale has been selected")
