@@ -1,6 +1,7 @@
 from math import nan
 import discord
 from discord.ext import commands
+from requests.api import request
 from terminaltables import AsciiTable, DoubleTable, SingleTable
 from datetime import datetime
 import requests
@@ -11,6 +12,9 @@ from geopy.geocoders import Nominatim
 
 bot = commands.Bot(command_prefix="~")
 geolocator = Nominatim(user_agent="ungaDiscordBot")
+
+
+
 @bot.event
 async def on_ready():
     print("Were good to go")

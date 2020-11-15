@@ -17,16 +17,16 @@ try:
     scale = int(scale)
 except Exception:
     print("No Letters Allowed")
-
-if isinstance(scale, int):
-    if scale < 2:
-        scale = 1
-        print("Default Scale has been selected")
-    elif scale >= 2:
-        print("Scale 2 was selected")
-else:
     scale = 1
     print("Default Scale has been selected")
+
+if scale > 1 or scale < 2:
+    scale = scale
+else:
+    print("cannot have scale below 1 or above 2")
+    print("Default Scale has been selected")
+    scale = 1
+
 
 if os.path.exists(resource_path(os.path.dirname(os.path.abspath(__file__)))+"\\command.txt"):
         os.remove(resource_path(os.path.dirname(os.path.abspath(__file__)))+"\\command.txt")
@@ -46,12 +46,11 @@ def convImg():
         for head in ply.getdata():
             tempdev = 1000
             winner =""
-            value = False
             r1,g1,b1=head
             for name,color in colors.items():
                 r2,g2,b2=color
                 dev = abs(r1-r2) + abs(g1-g2) + abs(b1-b2)
-                if (value !=False) or (dev < tempdev):
+                if (dev < tempdev):
                     winner = name
                     tempdev = dev
             file1.write('{id:"'+winner+'",Count:1b},')
