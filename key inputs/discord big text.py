@@ -32,9 +32,9 @@ def on_press(key):
     ### looking for letters
     elif bool(re.match(regstr, letter)):
         message.append(":regional_indicator_"+str(letter)+": ")
-    ### lloking for numbers
+    ### looking for numbers
     elif bool(re.match(regnum, letter)):
-        message.append(":{0}:".format(numbers.get(letter)))
+        message.append(":{0}: ".format(numbers.get(letter)))
     ### print something when any other key is pressed
     else:
         print("no key")
