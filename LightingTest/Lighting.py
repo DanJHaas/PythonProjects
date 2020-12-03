@@ -15,6 +15,7 @@ def Lclick(event):
     y1=event.y//16*16
     x2=x1+16
     y2=y1+16
+    Light(int(y1/16),int(x1/16),9)
     Draw()
     
 
@@ -35,7 +36,6 @@ def Setup():
 
 def Draw():
     C.delete("all")
-    Light(int(y1/16),int(x1/16),9)
     Select(x1,y1,x2,y2)
     for i in range(32):
         C.create_line(i*16,0,i*16,512)
