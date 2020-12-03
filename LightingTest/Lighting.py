@@ -42,7 +42,7 @@ def Setup():
 
 def Draw():
     C.delete("all")
-    Light(int(ly),int(lx),16)
+    Light(int(ly),int(lx),8)
     Select(x1,y1,x2,y2)
     for i in range(32):
         C.create_line(i*16,0,i*16,512)
@@ -68,7 +68,7 @@ def Light(lightX,lightY,radius):
             dist = (dist-radius+floor(radius/2))*-1
             if dist <= 0:
                 dist=0
-            C.create_rectangle(gridY*16,gridX*16,(gridY*16)+16,(gridX*16)+16,fill="#{:02x}{:02x}00".format(dist*10,dist*10))
+            C.create_rectangle(gridY*16,gridX*16,(gridY*16)+16,(gridX*16)+16,fill="#{:02x}{:02x}00".format(dist*20,dist*20))
             try:    
                 L[gridY][gridX] = dist
             except:
