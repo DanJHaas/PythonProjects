@@ -5,7 +5,7 @@ top = tk.Tk()
 
 L = []
 
-x1,y1,x2,y2,lx,ly=0,0,0,0,16,16
+x1,y1,x2,y2,lx,ly=0,0,0,0,0,0
 
 def Lclick(event):
     # print("x: {0}, y: {1}".format(event.x,event.y))
@@ -29,10 +29,14 @@ def Rclick(event):
 C = tk.Canvas(top, bg="black", height=512, width=512)
 
 def Setup():
+    global lx,ly
+    lx,ly=16,16
     for i in range(32):
         L.append([])
         for j in range(32):
             L[i].append([])
+    Draw()
+
     
     
 
@@ -73,7 +77,6 @@ def Light(lightX,lightY,radius):
 
 
 Setup()
-Draw()
 C.bind("<Button-1>", Lclick)
 C.bind("<Button-3>", Rclick)
 C.pack()
