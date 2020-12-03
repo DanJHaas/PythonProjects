@@ -5,17 +5,19 @@ top = tk.Tk()
 
 L = []
 
-x1,y1,x2,y2=0,0,0,0
+x1,y1,x2,y2,lx,ly=0,0,0,0,16,16
 
 def Lclick(event):
     # print("x: {0}, y: {1}".format(event.x,event.y))
     # print("box-x: {0}, box-y: {1}".format(1+event.x//16,1+event.y//16))
-    global x1,y1,x2,y2
+    global x1,y1,x2,y2,lx,ly
     x1=event.x//16*16
     y1=event.y//16*16
     x2=x1+16
     y2=y1+16
-    Light(int(y1/16),int(x1/16),9)
+    lx = x1/16
+    ly = y1/16
+    
     Draw()
     
 
@@ -24,7 +26,7 @@ def Rclick(event):
 
 
 
-C = tk.Canvas(top, bg="green", height=512, width=512)
+C = tk.Canvas(top, bg="black", height=512, width=512)
 
 def Setup():
     for i in range(32):
@@ -36,6 +38,7 @@ def Setup():
 
 def Draw():
     C.delete("all")
+    Light(int(ly),int(lx),16)
     Select(x1,y1,x2,y2)
     for i in range(32):
         C.create_line(i*16,0,i*16,512)
@@ -43,24 +46,27 @@ def Draw():
         for j in range(32):
             if L[i][j] == []:
                 L[i][j] = 0
-            C.create_text(8+i*16,8+j*16,text=str(L[i][j]),font="Times 12")
+            if not L[i][j] == 0:
+                C.create_text(8+i*16,8+j*16,text=str(L[i][j]),font="Times 12")
 
     
 def Select(x1,y1,x2,y2):
-    C.create_rectangle(x1,y1,x2,y2,fill="blue")
+    C.create_rectangle(x1,y1,x2,y2,fill="#ffff00")
 
 
-def Light(lx,ly,r):
-    for y in range(r):
-        for x in range(r):
-            gx = lx-floor(r/2)+x
-            gy = ly-floor(r/2)+y
-            dist = abs(gx-lx) + abs(gy-ly)
-            dist = (dist-r+floor(r/2))*-1
-            if dist < 0:
+def Light(lightX,lightY,radius):
+    radius=radius*2
+    for y in range(radius):
+        for x in range(radius):
+            gridX = abs(lightX-floor(radius/2)+x)
+            gridY = abs(lightY-floor(radius/2)+y)
+            dist = abs(gridX-lightX) + abs(gridY-lightY)
+            dist = (dist-radius+floor(radius/2))*-1
+            if dist <= 0:
                 dist=0
+            C.create_rectangle(gridY*16,gridX*16,(gridY*16)+16,(gridX*16)+16,fill="#{:02x}{:02x}00".format(dist*10,dist*10))
             try:    
-                L[gy][gx] = dist
+                L[gridY][gridX] = dist
             except:
                 None
             
