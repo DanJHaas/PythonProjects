@@ -32,16 +32,16 @@ with open("Advent of code\Day4\input.txt") as f:
                 for i in hot:
                     c=re.split(":",i)
                     dictdata[c[0]]=c[1]
-                print(dictdata)
+                # print(dictdata)
                 for info in fields:
                     try:
                         x = dictdata[info]
                         if info == "byr":
-                            d1=(len(x) is 4) and (int(x)>=1920 and int(x)<=2002)
+                            d1=(len(x) == 4) and (int(x)>=1920 and int(x)<=2002)
                         if info == "iyr":
-                            d2=(len(x) is 4) and (int(x)>=2010 and int(x)<=2020)
+                            d2=(len(x) == 4) and (int(x)>=2010 and int(x)<=2020)
                         if info == "eyr":
-                            d3=(len(x) is 4) and (int(x)>=2020 and int(x)<=2030)
+                            d3=(len(x) == 4) and (int(x)>=2020 and int(x)<=2030)
                         if info == "hgt":
                             if "in" in x:
                                 x=(int(str(x).replace("in","")))
@@ -57,14 +57,15 @@ with open("Advent of code\Day4\input.txt") as f:
                             d7 = re.match(r"[0-9]{9}",x)
 
                     except:
-                        print("not ",info)
+                        None
+                        # print("not ",info)
                 if ((d1 and d2) and (d3 and d4)) and ((d5 and d6) and d7):
-                    print("valid")
+                    # print("valid")
                     correct2+=1
                 d1,d2,d3,d4,d5,d6,d7=False,False,False,False,False,False,False
             else:
                 None
-            print("------------------------------------------------------------------"+"passport: ",passport,"CK: "+str(ck)+" ^^^")
+            # print("------------------------------------------------------------------"+"passport: ",passport,"CK: "+str(ck)+" ^^^")
             ck=0
             passport+=1
             fieldscorrect=[]
