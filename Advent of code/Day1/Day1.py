@@ -14,6 +14,7 @@ with open("Advent of code\Day1\input.txt") as f:
             if x+y == 2020:
                 print(x,y)
                 print(x*y)
+                pass
     print("break--------------------------------------------------------------------------------")
     for i in range(len(num)):
         for j in range(len(num)):
@@ -24,4 +25,5 @@ with open("Advent of code\Day1\input.txt") as f:
                 if x+y+z == 2020:
                     print(x,y,z)
                     print(x*y*z)
+                    pass
 
