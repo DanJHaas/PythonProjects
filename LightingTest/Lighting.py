@@ -1,6 +1,6 @@
 from math import ceil, floor
 import tkinter as tk
-from tkinter import *
+# from tkinter import *
 top = tk.Tk()
 
 L = []
