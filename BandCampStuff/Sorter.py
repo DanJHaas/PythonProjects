@@ -1,5 +1,5 @@
 import requests
-r =  requests.get("https://aarongrooves.bandcamp.com"+"/sitemap.xml", stream=True)
+r =  requests.get(""+"/sitemap.xml", stream=True)
 
 
 sc = 0
