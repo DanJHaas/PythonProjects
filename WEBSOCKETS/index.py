@@ -4,7 +4,6 @@ import json
 import math
 from PIL import Image
 import random
-#ws://72.68.183.77:5000
 
 x,y=0,-1
 
