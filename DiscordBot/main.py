@@ -13,14 +13,16 @@ import random
 import io
 from geopy.geocoders import Nominatim
 
-bot = commands.Bot(command_prefix="~")
+bot = commands.Bot(
+    command_prefix="~",
+    activity=discord.Game("~help | fixing up some things..."),
+)
 geolocator = Nominatim(user_agent="ungaDiscordBot")
 
 
 @bot.event
 async def on_ready():
     print("Were good to go")
-    discord.Game("fixing up some things...")
 
 
 def coordtolocation(lat, lon):
