@@ -2,3 +2,4 @@
 /.vscode
 /DiscordBot/Certs.py
 *.csv
+*.gcode
