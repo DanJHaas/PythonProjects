@@ -367,7 +367,6 @@ async def geocode(ctx, *args):
 
 
 # e621, lots of string and url formatting, Uri is annoying and should be tossed into hell
-# https://e621.net/posts.json?limit=1&tags=transformation+order:random
 # @bot.command()
 # async def e621(ctx, *args):
 #     if ctx.channel.is_nsfw():
@@ -393,7 +392,7 @@ async def geocode(ctx, *args):
 
 #         PARAMS = {"limit": limit, "tags": tags}
 #         qry = urllib.parse.urlencode(PARAMS).replace("%3A", ":").replace("%2B", "+")
-#         HEADERS = {"User-Agent": "HH124", "From": "hasshaas1@gmail.com"}
+#         HEADERS = {"User-Agent": "cum", "From": "googaa@fuckyou.com"}
 #         s = requests.Session()
 #         req = requests.Request(method="GET", url=URL, params=PARAMS, headers=HEADERS)
 #         prep = req.prepare()
