@@ -7,13 +7,17 @@ from datetime import datetime
 import requests
 import urllib.request
 import json
-from PIL import Image
+from PIL import Image, ImageFont, ImageDraw
 import time
 import random
 import io
 from geopy.geocoders import Nominatim
 
+
+intents = discord.Intents.default()
+intents.members = True
 bot = commands.Bot(
+    intents=intents,
     command_prefix="~",
     activity=discord.Game("~help | fixing up some things..."),
 )
@@ -23,6 +27,19 @@ geolocator = Nominatim(user_agent="ungaDiscordBot")
 @bot.event
 async def on_ready():
     print("Were good to go")
+
+
+def usertoavatar(user, imgx=1024, imgy=1024):
+    im = Image.open(
+        io.BytesIO(
+            requests.get(
+                url=user.avatar_url_as(format="png", static_format="png"),
+                params={"user": "cum"},
+            ).content
+        )
+    )
+    resize = im.resize((imgx, imgy))
+    return resize
 
 
 def coordtolocation(lat, lon):
@@ -62,7 +79,7 @@ def GetWeather(city):
 
 
 def grepWeather(lat, lon):
-    myfile1 = open("DiscordBot\key2.txt")
+    myfile1 = open("key2.txt")
     txt1 = myfile1.read()
     URL = "https://api.weatherbit.io/v2.0/current"
     apikey = txt1
@@ -75,20 +92,100 @@ def grepWeather(lat, lon):
 
 
 @bot.command()
+async def picture(ctx, *user: discord.User):
+    for i in user:
+        u = await bot.fetch_user(i.id)
+        await ctx.send(u.avatar_url)
+
+
+@bot.command()
+async def sus(ctx, user: discord.User):
+    mentioned_users = [user, ctx.author]
+    stored_users = []
+    all_users = []
+    user_info = []
+    # get all users in a list
+    for i in ctx.message.guild.members:
+        if i not in (user, ctx.author):
+            all_users.append(i)
+    random.shuffle(all_users)
+
+    # properly sort list to be used later
+    for test in range(10):
+        if test not in (1, 7):
+            try:
+                stored_users.append(all_users[0])
+                all_users.remove(all_users[0])
+            except:
+                stored_users.append("blank")
+        else:
+            stored_users.append(mentioned_users[0])
+            mentioned_users.remove(mentioned_users[0])
+
+    # sort list of users into proper formatting
+    for i in stored_users:
+        if i != "blank":
+            u = await bot.fetch_user(i.id)
+            user_info.append(usertoavatar(u, 38, 38))
+            user_info.append(i.name)
+        else:
+            blank = Image.new("RGBA", (38, 38), (238, 245, 253))
+            user_info.append(blank)
+            user_info.append("")
+
+    # duct tape code theres definatly nothing here
+    if user_info[19] == "":
+        user_info[18] = Image.new("RGBA", (45, 38), (149, 156, 164))
+
+    # 115, 64 starting pos
+
+    # 50 pixels offset down
+    # 241 left offset
+    # loop for setting proper picture offsets
+
+    # text offsets start(160,69)
+    textx = 160
+    texty = 64
+    offx = 115
+    offy = 64
+    backimage = Image.open("amogus.png", "r")
+    font = ImageFont.truetype("amogus.ttf", 20)
+    draw = ImageDraw.Draw(backimage)
+    for i in range(20):
+        if i % 2 == 0:
+            draw.text(
+                (textx, texty), user_info[i + 1], font=font, align="left", fill="black"
+            )
+
+            x1, y1 = user_info[i].size
+            backimage.paste(
+                user_info[i], box=(0 + offx, 0 + offy, x1 + offx, y1 + offy)
+            )
+            texty += 50
+            offy += 50
+            if i == 8:
+                texty = 64
+                offy = 64
+                textx += 241
+                offx += 241
+
+    with io.BytesIO() as image_binary:
+        backimage.save(image_binary, "PNG")
+        image_binary.seek(0)
+        await ctx.send(file=discord.File(fp=image_binary, filename="image.png"))
+    pass
+
+
+@bot.command()
 async def chad(ctx, *user: discord.User):
-    # u = await bot.fetch_user(user.id)
-    # await ctx.send(u.avatar_url)
+
     users = []
     if len(user) == 2:
         for i in user:
             u = await bot.fetch_user(i.id)
-            PARAMS = {"user": "cum"}
-            r = requests.get(url=u.avatar_url, params=PARAMS)
-            im = Image.open(io.BytesIO(r.content)).convert("RGBA")
-            reim = im.resize((128, 128))
-            users.append(reim)
+            users.append(usertoavatar(u, 128, 128))
 
-        backimage = Image.open("DiscordBot/cover8.png", "r").convert("RGBA")
+        backimage = Image.open("cover8.png", "r").convert("RGBA")
         x1, y1 = users[0].size
         x2, y2 = users[1].size
         offx1 = 335
@@ -271,52 +368,52 @@ async def geocode(ctx, *args):
 
 # e621, lots of string and url formatting, Uri is annoying and should be tossed into hell
 # https://e621.net/posts.json?limit=1&tags=transformation+order:random
-@bot.command()
-async def e621(ctx, *args):
-    if ctx.channel.is_nsfw():
-        URL = "https://e621.net/posts.json?"
-        limit = "1"
-        if args != None:
-            await ctx.send(
-                "```"
-                + "Tags: "
-                + str(args).replace("(", "").replace(")", "").replace("'", "")
-                + "```"
-            )
-            tags = (
-                str(args)
-                .replace(",", "+")
-                .replace("(", "")
-                .replace(")", "")
-                .replace("'", "")[:-1]
-                + "+order:random"
-            )
-        else:
-            tags = "order:random"
+# @bot.command()
+# async def e621(ctx, *args):
+#     if ctx.channel.is_nsfw():
+#         URL = "https://e621.net/posts.json?"
+#         limit = "1"
+#         if args != None:
+#             await ctx.send(
+#                 "```"
+#                 + "Tags: "
+#                 + str(args).replace("(", "").replace(")", "").replace("'", "")
+#                 + "```"
+#             )
+#             tags = (
+#                 str(args)
+#                 .replace(",", "+")
+#                 .replace("(", "")
+#                 .replace(")", "")
+#                 .replace("'", "")[:-1]
+#                 + "+order:random"
+#             )
+#         else:
+#             tags = "order:random"
 
-        PARAMS = {"limit": limit, "tags": tags}
-        qry = urllib.parse.urlencode(PARAMS).replace("%3A", ":").replace("%2B", "+")
-        HEADERS = {"User-Agent": "HH124", "From": "hasshaas1@gmail.com"}
-        s = requests.Session()
-        req = requests.Request(method="GET", url=URL, params=PARAMS, headers=HEADERS)
-        prep = req.prepare()
-        prep.url = URL + qry
-        link = s.send(prep)
-        r = link.json()
-        if r["posts"] != []:
-            for i in range(int(limit)):
-                await ctx.send(
-                    "```" + "Artist: " + r["posts"][i]["tags"]["artist"][0] + "```"
-                )
-                await ctx.send(r["posts"][i]["file"]["url"])
-                time.sleep(1)
-        else:
-            await ctx.send("invalid tags please try again")
-    else:
-        await ctx.send("This is a Non-Nsfw chat")
+#         PARAMS = {"limit": limit, "tags": tags}
+#         qry = urllib.parse.urlencode(PARAMS).replace("%3A", ":").replace("%2B", "+")
+#         HEADERS = {"User-Agent": "HH124", "From": "hasshaas1@gmail.com"}
+#         s = requests.Session()
+#         req = requests.Request(method="GET", url=URL, params=PARAMS, headers=HEADERS)
+#         prep = req.prepare()
+#         prep.url = URL + qry
+#         link = s.send(prep)
+#         r = link.json()
+#         if r["posts"] != []:
+#             for i in range(int(limit)):
+#                 await ctx.send(
+#                     "```" + "Artist: " + r["posts"][i]["tags"]["artist"][0] + "```"
+#                 )
+#                 await ctx.send(r["posts"][i]["file"]["url"])
+#                 time.sleep(1)
+#         else:
+#             await ctx.send("invalid tags please try again")
+#     else:
+#         await ctx.send("This is a Non-Nsfw chat")
 
 
-myfile = open("DiscordBot\key1.txt")
+myfile = open("key1.txt")
 txt = myfile.read()
 bot.run(txt)
 myfile.close()
