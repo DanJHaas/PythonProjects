@@ -9,6 +9,7 @@ Scripts
 # generic file types
 *.txt
 *.png
+*.ttf
 *.json
 *.cfg
 
