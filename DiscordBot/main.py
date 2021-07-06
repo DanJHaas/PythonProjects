@@ -1,6 +1,7 @@
 from math import nan
 import discord
-from discord.ext import commands
+from discord.ext import commands, tasks
+from discord.ext.commands.errors import CommandError, MissingRole
 from requests.api import request
 from terminaltables import AsciiTable, DoubleTable, SingleTable
 from datetime import datetime
@@ -24,9 +25,24 @@ bot = commands.Bot(
 geolocator = Nominatim(user_agent="ungaDiscordBot")
 
 
+
+@bot.event
+async def on_command_error(ctx, error):
+    pass
+
+
 @bot.event
 async def on_ready():
     print("Were good to go")
+
+
+@tasks.loop(seconds=1.0)
+async def hello():
+    epoch_time = int(time.time())
+    print(epoch_time)
+
+
+hello.start()
 
 
 def usertoavatar(user, imgx=1024, imgy=1024):
@@ -92,6 +108,7 @@ def grepWeather(lat, lon):
 
 
 @bot.command()
+# @commands.has_role("BACHELORS")
 async def picture(ctx, *user: discord.User):
     for i in user:
         u = await bot.fetch_user(i.id)
@@ -174,6 +191,32 @@ async def sus(ctx, user: discord.User):
         image_binary.seek(0)
         await ctx.send(file=discord.File(fp=image_binary, filename="image.png"))
     pass
+
+
+def make_image(user):
+    im = Image.new("RGBA", (1224, 1224), (0, 0, 0, 0))
+    background = Image.open("border.png")
+    profileoff = (100, 100)
+    masking = Image.open("mask.png")
+    profile = usertoavatar(user)
+    im.paste(profile, box=profileoff, mask=masking)
+    im.paste(background, mask=background)
+    return im
+
+
+@bot.command()
+async def card(ctx, *users: discord.User):
+
+    images = []
+    for i in users:
+        u = await bot.fetch_user(i.id)
+        images.append(make_image(u))
+
+    for i in images:
+        with io.BytesIO() as image_binary:
+            i.save(image_binary, "PNG")
+            image_binary.seek(0)
+            await ctx.send(file=discord.File(fp=image_binary, filename="image.png"))
 
 
 @bot.command()
@@ -410,6 +453,26 @@ async def geocode(ctx, *args):
 #             await ctx.send("invalid tags please try again")
 #     else:
 #         await ctx.send("This is a Non-Nsfw chat")
+
+
+@card.error
+async def clear_error(ctx, error):
+    await ctx.send("no")
+
+
+@chad.error
+async def clear_error(ctx, error):
+    await ctx.send("no")
+
+
+@sus.error
+async def clear_error(ctx, error):
+    await ctx.send("no")
+
+
+@picture.error
+async def clear_error(ctx, error):
+    await ctx.send("no")
 
 
 myfile = open("key1.txt")

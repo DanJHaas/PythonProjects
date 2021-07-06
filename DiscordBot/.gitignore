@@ -1,7 +1,18 @@
+# vscode files
 .vscode
+
+# directories
 Include
 Lib
 Scripts
-pyvenv.cfg
+
+# generic file types
 *.txt
-Certs.py
+*.png
+*.json
+*.cfg
+
+# python files
+database.py
+testing.py
+masking.py
