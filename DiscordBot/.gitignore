@@ -5,6 +5,9 @@
 Include
 Lib
 Scripts
+Silly
+coms/__pycache__
+__pycache__
 
 # generic file types
 *.txt
@@ -14,6 +17,3 @@ Scripts
 *.cfg
 
 # python files
-database.py
-testing.py
-masking.py
