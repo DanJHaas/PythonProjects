@@ -1,12 +1,13 @@
 from dataclasses import dataclass
 import io
+import PIL
 import requests
 from PIL import Image
 import json
 
 
 # convert user id into image for use
-def usertoavatar(user, imgx=1024, imgy=1024):
+def usertoavatar(user, imgx=1024, imgy=1024) -> Image:
     im = Image.open(
         io.BytesIO(
             requests.get(
@@ -31,7 +32,7 @@ def coordtolocation(lat, lon):
 
 
 # varied use cases but splits list into nice discord format
-def splitlist(input):
+def splitlist(input) -> str:
     value = ""
     try:
         if type(input) == dict:
@@ -47,7 +48,7 @@ def splitlist(input):
 
 # returns weather data information about that location
 # not very acurate but i cant do much about that
-def GetWeather(city):
+def GetWeather(city) -> json:
     URL = "http://api.openweathermap.org/data/2.5/weather"
     location = city
     apikey = "5302a0e28047fdba190337922230a083"
@@ -59,7 +60,7 @@ def GetWeather(city):
     return obj
 
 
-def make_image(user):
+def make_image(user) -> Image:
     im = Image.new("RGBA", (1224, 1224), (0, 0, 0, 0))
     background = Image.open("border.png")
     profileoff = (100, 100)

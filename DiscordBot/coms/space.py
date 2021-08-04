@@ -4,8 +4,8 @@ from discord.ext import commands
 # after imports \/
 import json
 import requests
-import datetime
 import HatFunctions
+from datetime import datetime
 
 # command types [Funny, Tools]
 class Tools(commands.Cog):
@@ -25,6 +25,7 @@ class Tools(commands.Cog):
         epochTime = datetime.utcfromtimestamp(int(obj["timestamp"])).strftime(
             "%Y-%m-%d %H:%M:%S"
         )
+
         text1 = {
             "Timestamp": epochTime,
             "Longitude": obj["longitude"],
@@ -41,9 +42,7 @@ class Tools(commands.Cog):
         embedVar.add_field(
             name="General Info", value=HatFunctions.splitlist(text1), inline=False
         )
-        # embedVar.add_field(name="Field2", value="https://i.nhentai.net/galleries/1914664/1.jpg", inline=False)
-        # embedVar.set_image(url="image url")
-        await ctx.channel.send(embed=embedVar)
+        await ctx.send(embed=embedVar)
 
 
 def setup(bot):
