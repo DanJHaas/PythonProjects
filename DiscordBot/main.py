@@ -11,6 +11,7 @@ bot = commands.Bot(
 )
 
 
+# catch any invalid or non-exsistant command
 @bot.event
 async def on_command_error(ctx, error):
     pass

@@ -8,10 +8,9 @@ class Tools(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    # https://github.com/HattyH124/PythonProjects
     @commands.command()
     async def github(self, ctx):
-        await ctx.send("https://github.com/HattyH124/PythonProjects")
+        await ctx.send("https://github.com/DanJHaas/PythonProjects")
 
 
 def setup(bot):

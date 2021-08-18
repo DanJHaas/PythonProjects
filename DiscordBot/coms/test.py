@@ -23,7 +23,10 @@ class Tools(commands.Cog):
         all_users = []
         for i in ctx.message.guild.members:
             all_users.append(i)
-            await ctx.send(f"{i.name=}")
+
+        # await ctx.send(f"{[i.id for i in all_users]}")
+        print([i.id for i in all_users])
+        # print(f"{all_users[int(len(all_users))-1:].name}")
 
 
 def setup(bot):
