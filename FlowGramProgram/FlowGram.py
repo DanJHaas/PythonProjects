@@ -7,7 +7,7 @@ pyglet program:
 import pyglet
 from pyglet.graphics import draw
 from pyglet.window import mouse
-from pyglet import shapes,gui
+from pyglet import shapes, gui
 import LineTool
 import ToolBar
 import ButtonHandler
@@ -25,31 +25,34 @@ def printhi():
     print("hi")
     pass
 
+
 def printlow():
     print("low")
     pass
 
 
-ButtonHandler.CreateButton(30,40,"toggle",True,False)
-ButtonHandler.CreateButton(200,220,"toggle","cock","penis")
+ButtonHandler.CreateButton(30, 40, "toggle", True, False)
+ButtonHandler.CreateButton(200, 220, "toggle", "1", "2")
 
 # LineTool.active = True
 
+
 @window.event
-def on_mouse_press(x,y,button,mods):
+def on_mouse_press(x, y, button, mods):
     # LineTool.active = ButtonHandler.ToggleButton(x,y)
     # print(LineTool.active)
-    LineTool.onClick(x,y,button,linecur,window)
-       
-
-@window.event   
-def on_mouse_release(x, y, button, mods):
-    LineTool.onRelease(x,y,button,defcur,window)
+    LineTool.onClick(x, y, button, linecur, window)
 
 
 @window.event
-def on_mouse_drag(x,y,dx,dy,button,mods):
-    LineTool.onDrag(x,y,button)
+def on_mouse_release(x, y, button, mods):
+    LineTool.onRelease(x, y, button, defcur, window)
+
+
+@window.event
+def on_mouse_drag(x, y, dx, dy, button, mods):
+    LineTool.onDrag(x, y, button)
+
 
 @window.event
 def on_draw():
@@ -58,5 +61,5 @@ def on_draw():
     ToolBar.drawBox()
     ButtonHandler.DrawButtons()
 
-pyglet.app.run()
 
+pyglet.app.run()
